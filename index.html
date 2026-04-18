@@ -1,67 +1,65 @@
-import json
-import os
+import streamlit as st
+import pandas as pd
 
-class SalaryManager:
-    def __init__(self):
-        # البيانات الأساسية كما زودتني بها
-        self.data = {
-            "income": {
-                "الراتب الأساسي": 18072,
-                "حساب المواطن": 1100,
-                "الدعم": 1913
-            },
-            "expenses": {
-                "بر الوالدة": 300,
-                "قسط البيت": 6566,
-                "الكهرباء": 744,
-                "الإنترنت": 690,
-                "الماء": 100,
-                "زبود": 1600,
-                "نقل طيف ولمى": 350,
-                "قرض": 2950,
-                "تجميع الديرة": 2500
-            }
-        }
+# إعدادات الصفحة
+st.set_page_config(page_title="مدير ميزانية 2026", layout="centered")
 
-    def calculate(self):
-        total_income = sum(self.data["income"].values())
-        total_expenses = sum(self.data["expenses"].values())
-        remaining = total_income - total_expenses
-        return total_income, total_expenses, remaining
+st.title("💰 نظام إدارة الميزانية الشخصية 2026")
+st.write("من 27 / 1 / 2026 حتى 27 / 12 / 2026")
 
-    def display_report(self):
-        total_in, total_ex, remain = self.calculate()
-        
-        print("\n" + "="*45)
-        print(f"{'تقرير ميزانية عام 2026':^45}")
-        print("="*45)
-        
-        print("\n[ أولاً: مصادر الدخل ]")
-        for key, val in self.data["income"].items():
-            print(f"  - {key:<15}: {val:>7} ريال")
-        print(f"  {'إجمالي الدخل':<15}: {total_in:>7} ريال")
-        
-        print("\n[ ثانياً: المصاريف والالتزامات ]")
-        for key, val in self.data["expenses"].items():
-            print(f"  - {key:<15}: {val:>7} ريال")
-        print(f"  {'إجمالي المصاريف':<15}: {total_ex:>7} ريال")
-        
-        print("\n" + "-"*45)
-        print(f"  {'المبلغ المتبقي':<15}: {remain:>7} ريال")
-        print("-"*45 + "\n")
+# --- القسم الأول: الدخل ---
+st.header("📥 الدخل الشهري")
+col1, col2, col3 = st.columns(3)
+with col1:
+    salary = st.number_input("الراتب الأساسي", value=18072)
+with col2:
+    citizen_acc = st.number_input("حساب المواطن", value=1100)
+with col3:
+    support = st.number_input("الدعم", value=1913)
 
-    def save_to_file(self, filename="budget_2026.txt"):
-        """حفظ التقرير في ملف نصي للرجوع إليه"""
-        total_in, total_ex, remain = self.calculate()
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(f"تقرير ميزانية 2026\n")
-            f.write(f"إجمالي الدخل: {total_in}\n")
-            f.write(f"إجمالي المصاريف: {total_ex}\n")
-            f.write(f"المتبقي: {remain}\n")
-        print(f"✅ تم حفظ التقرير في الملف: {filename}")
+total_income = salary + citizen_acc + support
 
-# تشغيل البرنامج
-if __name__ == "__main__":
-    manager = SalaryManager()
-    manager.display_report()
-    manager.save_to_file()
+# --- القسم الثاني: المصاريف ---
+st.header("💸 المصاريف والالتزامات")
+
+# قائمة المصاريف الافتراضية
+default_expenses = {
+    "بر الوالدة": 300,
+    "قسط البيت": 6566,
+    "الكهرباء": 744,
+    "الإنترنت": 690,
+    "الماء": 100,
+    "زبود": 1600,
+    "نقل طيف ولمى": 350,
+    "قرض": 2950,
+    "تجميع الديرة": 2500
+}
+
+# تمكين المستخدم من تعديل القيم أو إضافة خانات
+updated_expenses = {}
+for item, value in default_expenses.items():
+    updated_expenses[item] = st.sidebar.number_input(f"تعديل {item}", value=value)
+
+# إضافة خانة جديدة ديناميكياً
+new_item = st.sidebar.text_input("إضافة مصروف جديد (الاسم)")
+new_value = st.sidebar.number_input("قيمة المصروف الجديد", value=0)
+if new_item:
+    updated_expenses[new_item] = new_value
+
+total_expenses = sum(updated_expenses.values())
+remaining = total_income - total_expenses
+
+# --- القسم الثالث: العرض والنتائج ---
+st.divider()
+c1, c2, c3 = st.columns(3)
+c1.metric("إجمالي الدخل", f"{total_income} ريال")
+c2.metric("إجمالي المصاريف", f"{total_expenses} ريال")
+c3.metric("المتبقي الصافي", f"{remaining} ريال", delta_color="normal")
+
+# عرض جدول المصاريف
+st.subheader("📊 تفاصيل المصاريف")
+df = pd.DataFrame(list(updated_expenses.items()), columns=['البند', 'المبلغ'])
+st.table(df)
+
+if st.button("حفظ التقرير نهائياً"):
+    st.success("تم الحساب بنجاح! يمكنك تصوير الشاشة للتوثيق.")
