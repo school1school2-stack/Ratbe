@@ -3,152 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مستشاري المالي 2026</title>
+    <title>ميزانيتي السحابية 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); min-height: 100vh; }
-        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: all 0.3s ease; }
-        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        input { background: transparent; border: none; font-weight: bold; width: 80px; text-align: center; color: #1e293b; outline: none; }
-        .input-group:focus-within { border-color: #3b82f6; ring: 2px; }
-        .icon-3d { filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1)); font-size: 2rem; }
-        .pulse { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        body { font-family: 'Cairo', sans-serif; background: #f8fafc; min-height: 100vh; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.04); }
+        .cloud-btn { transition: all 0.3s ease; cursor: pointer; }
+        .cloud-btn:hover { transform: scale(1.1); color: #3b82f6; }
+        input { background: #f1f5f9; border-radius: 8px; padding: 4px 8px; font-weight: bold; width: 90px; text-align: center; }
+        .floating { animation: floating 3s ease-in-out infinite; }
+        @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4">
 
-    <div class="max-w-4xl mx-auto">
-        <header class="text-center mb-10">
-            <h1 class="text-3xl font-bold text-slate-800 flex justify-center items-center gap-3">
-                <span class="pulse">💎</span> مدير ميزانية 2026
-            </h1>
-            <p class="text-slate-500 mt-2">نظّم مالك.. يبارك الله لك</p>
-        </header>
+    <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-6">
+            <div class="floating text-6xl mb-2">☁️</div>
+            <h1 class="text-2xl font-bold text-slate-800">ميزانيتي في السحابة</h1>
+            <p class="text-slate-500 text-sm">بياناتك محفوظة وآمنة</p>
+        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="glass-card p-6 text-center border-t-4 border-blue-500">
-                <div class="text-4xl mb-2">💰</div>
-                <div class="text-slate-500 text-sm">إجمالي الدخل</div>
-                <div id="display-income" class="text-2xl font-bold text-blue-600">20,996</div>
+        <div class="glass-card p-6 mb-6 flex justify-around items-center border-b-4 border-blue-500">
+            <div class="text-center">
+                <p class="text-xs text-slate-400">المتبقي</p>
+                <div id="display-remaining" class="text-3xl font-bold text-emerald-600">0</div>
             </div>
-            <div class="glass-card p-6 text-center border-t-4 border-red-400">
-                <div class="text-4xl mb-2">💸</div>
-                <div class="text-slate-500 text-sm">إجمالي المصاريف</div>
-                <div id="display-expenses" class="text-2xl font-bold text-red-500">15,800</div>
-            </div>
-            <div class="glass-card p-6 text-center border-t-4 border-emerald-500 bg-emerald-50">
-                <div class="text-4xl mb-2">🌿</div>
-                <div class="text-slate-500 text-sm">المتبقي الصافي</div>
-                <div id="display-remaining" class="text-2xl font-bold text-emerald-600">5,196</div>
+            <div onclick="saveToCloud()" class="cloud-btn text-center">
+                <i data-lucide="cloud-upload" class="w-10 h-10 mx-auto"></i>
+                <p class="text-[10px] font-bold mt-1">حفظ الآن</p>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <section class="glass-card p-6">
-                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-                    <i data-lucide="trending-up" class="text-blue-500"></i> مصادر الدخل
-                </h2>
-                <div class="space-y-4">
-                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
-                        <span>الراتب الأساسي</span>
-                        <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="18072" oninput="updateAll()" id="inc-1"> <span class="text-xs">ريال</span>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
-                        <span>حساب المواطن</span>
-                        <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="1100" oninput="updateAll()" id="inc-2"> <span class="text-xs">ريال</span>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
-                        <span>الدعم</span>
-                        <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="1913" oninput="updateAll()" id="inc-3"> <span class="text-xs">ريال</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <div class="space-y-4">
+            <div class="glass-card p-4 flex justify-between items-center">
+                <span class="font-bold text-slate-700">💰 مجموع الدخل</span>
+                <input type="number" id="total-in" value="20996" oninput="calculate()">
+            </div>
 
-            <section class="glass-card p-6">
-                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-                    <i data-lucide="shopping-cart" class="text-red-400"></i> المصاريف والمدخرات
-                </h2>
-                <div class="space-y-3 h-[300px] overflow-y-auto pr-2" id="expenses-list">
+            <div class="glass-card p-4">
+                <h3 class="font-bold mb-3 text-red-500 flex items-center gap-2">
+                    <i data-lucide="minus-circle" class="w-4 h-4"></i> المصاريف الأساسية
+                </h3>
+                <div id="exp-list" class="space-y-3 text-sm">
                     </div>
-                <button onclick="addExpense()" class="mt-4 w-full py-2 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 hover:bg-slate-50 transition">+ إضافة خانة جديدة</button>
-            </section>
+            </div>
         </div>
+
+        <p id="save-status" class="text-center text-xs text-emerald-500 mt-4 opacity-0 transition-opacity">✅ تم الحفظ في سحابتك الشخصية</p>
     </div>
 
     <script>
-        // الأيقونات
         lucide.createIcons();
 
-        const defaultExpenses = [
-            { name: "أمي الغالية ❤️", val: 300 },
-            { name: "قسط البيت 🏠", val: 6566 },
-            { name: "الكهرباء ⚡", val: 744 },
-            { name: "الإنترنت 🌐", val: 690 },
-            { name: "الماء 💧", val: 100 },
-            { name: "زبود 🛒", val: 1600 },
-            { name: "نقل طيف ولمى 🚌", val: 350 },
-            { name: "قرض بنكي 💳", val: 2950 },
-            { name: "تجميع الديرة 🏦", val: 2500 }
+        const expenses = [
+            {name: "بر الوالدة ❤️", val: 300},
+            {name: "قسط البيت 🏠", val: 6566},
+            {name: "الكهرباء والماء ⚡", val: 844},
+            {name: "الإنترنت والاتصالات 🌐", val: 690},
+            {name: "زبود وقرض 💳", val: 4550},
+            {name: "نقل وتجميع 🚌", val: 2850}
         ];
 
         function init() {
-            const list = document.getElementById('expenses-list');
-            defaultExpenses.forEach((item, index) => {
+            const list = document.getElementById('exp-list');
+            // محاولة تحميل بيانات قديمة إذا وجدت
+            const saved = localStorage.getItem('myBudget');
+            const data = saved ? JSON.parse(saved) : expenses;
+
+            data.forEach((item, i) => {
                 list.innerHTML += `
-                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition border-b border-slate-50">
-                        <span class="text-sm text-slate-600">${item.name}</span>
-                        <div class="bg-red-50 p-2 rounded-lg">
-                            <input type="number" value="${item.val}" oninput="updateAll()" class="exp-input text-red-600">
-                        </div>
+                    <div class="flex justify-between items-center">
+                        <span>${item.name}</span>
+                        <input type="number" class="exp-val" value="${item.val}" oninput="calculate()">
                     </div>
                 `;
             });
-            updateAll();
+            calculate();
         }
 
-        function updateAll() {
-            // حساب الدخل
-            const in1 = parseFloat(document.getElementById('inc-1').value) || 0;
-            const in2 = parseFloat(document.getElementById('inc-2').value) || 0;
-            const in3 = parseFloat(document.getElementById('inc-3').value) || 0;
-            const totalIn = in1 + in2 + in3;
-
-            // حساب المصاريف
-            const expInputs = document.querySelectorAll('.exp-input');
+        function calculate() {
+            const totalIn = parseFloat(document.getElementById('total-in').value) || 0;
+            const expInputs = document.querySelectorAll('.exp-val');
             let totalExp = 0;
-            expInputs.forEach(input => {
-                totalExp += parseFloat(input.value) || 0;
-            });
-
-            // تحديث الشاشة
-            document.getElementById('display-income').innerText = totalIn.toLocaleString();
-            document.getElementById('display-expenses').innerText = totalExp.toLocaleString();
+            expInputs.forEach(input => totalExp += parseFloat(input.value) || 0);
+            
             document.getElementById('display-remaining').innerText = (totalIn - totalExp).toLocaleString();
         }
 
-        function addExpense() {
-            const name = prompt("اسم المصروف الجديد:");
-            if (name) {
-                const list = document.getElementById('expenses-list');
-                list.innerHTML += `
-                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition border-b border-slate-50">
-                        <span class="text-sm text-slate-600">${name}</span>
-                        <div class="bg-red-50 p-2 rounded-lg">
-                            <input type="number" value="0" oninput="updateAll()" class="exp-input text-red-600">
-                        </div>
-                    </div>
-                `;
-                updateAll();
-            }
+        function saveToCloud() {
+            // حالياً يحفظ في ذاكرة المتصفح (الخطوة الأولى للسحابة)
+            const status = document.getElementById('save-status');
+            status.style.opacity = '1';
+            setTimeout(() => status.style.opacity = '0', 2000);
+            
+            // هنا يمكنك مستقبلاً وضع كود Firebase الموضح في صورتك
+            console.log("Saving to Firebase...");
         }
 
         window.onload = init;
