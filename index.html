@@ -10,7 +10,8 @@
     <style>
         body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); min-height: 100vh; }
         .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: all 0.3s ease; }
-        input { background: transparent; border: none; font-weight: bold; width: 85px; text-align: center; color: #1e293b; outline: none; }
+        input { background: transparent; border: none; font-weight: bold; width: 90px; text-align: center; color: #1e293b; outline: none; font-family: sans-serif; }
+        .number-font { font-family: sans-serif; }
         .pulse { animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         .save-btn { transition: all 0.3s; cursor: pointer; }
@@ -33,18 +34,18 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="glass-card p-6 text-center border-t-4 border-blue-500">
                 <div class="text-4xl mb-2">💰</div>
-                <div class="text-slate-500 text-sm">إجمالي الدخل</div>
-                <div id="display-income" class="text-2xl font-bold text-blue-600">0</div>
+                <div class="text-slate-500 text-sm font-bold">إجمالي الدخل</div>
+                <div id="display-income" class="text-2xl font-bold text-blue-600 number-font">0</div>
             </div>
             <div class="glass-card p-6 text-center border-t-4 border-red-400">
                 <div class="text-4xl mb-2">💸</div>
-                <div class="text-slate-500 text-sm">إجمالي المصاريف</div>
-                <div id="display-expenses" class="text-2xl font-bold text-red-500">0</div>
+                <div class="text-slate-500 text-sm font-bold">إجمالي المصاريف</div>
+                <div id="display-expenses" class="text-2xl font-bold text-red-500 number-font">0</div>
             </div>
             <div class="glass-card p-6 text-center border-t-4 border-emerald-500 bg-emerald-50/50">
                 <div class="text-4xl mb-2">🌿</div>
-                <div class="text-slate-500 text-sm">المتبقي الصافي</div>
-                <div id="display-remaining" class="text-2xl font-bold text-emerald-600">0</div>
+                <div class="text-slate-500 text-sm font-bold">المتبقي الصافي</div>
+                <div id="display-remaining" class="text-2xl font-bold text-emerald-600 number-font">0</div>
             </div>
         </div>
 
@@ -57,19 +58,19 @@
                     <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
                         <span>الراتب الأساسي</span>
                         <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="18072" oninput="updateAll()" id="inc-1"> <span class="text-xs text-slate-400">ريال</span>
+                            <input type="number" value="18072" oninput="updateAll()" id="inc-1"> <span class="text-xs text-slate-400">SAR</span>
                         </div>
                     </div>
                     <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
                         <span>حساب المواطن</span>
                         <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="1100" oninput="updateAll()" id="inc-2"> <span class="text-xs text-slate-400">ريال</span>
+                            <input type="number" value="1100" oninput="updateAll()" id="inc-2"> <span class="text-xs text-slate-400">SAR</span>
                         </div>
                     </div>
                     <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
                         <span>الدعم</span>
                         <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="1913" oninput="updateAll()" id="inc-3"> <span class="text-xs text-slate-400">ريال</span>
+                            <input type="number" value="1913" oninput="updateAll()" id="inc-3"> <span class="text-xs text-slate-400">SAR</span>
                         </div>
                     </div>
                 </div>
@@ -96,6 +97,7 @@
     <script>
         lucide.createIcons();
 
+        // البيانات الافتراضية بالإنجليزية
         const defaultExpenses = [
             { name: "بر الوالدة ❤️", val: 300 },
             { name: "قسط البيت 🏠", val: 6566 },
@@ -109,7 +111,7 @@
         ];
 
         function init() {
-            // 1. استرداد الدخل المحفوظ
+            // استرداد الدخل
             const savedIncome = localStorage.getItem('abu_nawaf_income');
             if (savedIncome) {
                 const incData = JSON.parse(savedIncome);
@@ -118,11 +120,11 @@
                 document.getElementById('inc-3').value = incData.in3;
             }
 
-            // 2. استرداد المصاريف المحفوظة
+            // استرداد المصاريف
             const savedExpenses = localStorage.getItem('abu_nawaf_expenses');
             const finalExpenses = savedExpenses ? JSON.parse(savedExpenses) : defaultExpenses;
 
-            document.getElementById('expenses-list').innerHTML = ''; // تنظيف القائمة
+            document.getElementById('expenses-list').innerHTML = '';
             finalExpenses.forEach(item => {
                 renderExpense(item.name, item.val);
             });
@@ -135,9 +137,9 @@
             const div = document.createElement('div');
             div.className = "flex justify-between items-center p-3 hover:bg-white rounded-xl transition border-b border-slate-50";
             div.innerHTML = `
-                <span class="text-sm text-slate-600">${name}</span>
+                <span class="text-sm text-slate-600 font-bold">${name}</span>
                 <div class="bg-red-50 p-2 rounded-lg">
-                    <input type="number" value="${val}" oninput="updateAll()" class="exp-input text-red-600">
+                    <input type="number" value="${val}" oninput="updateAll()" class="exp-input text-red-600 number-font">
                 </div>
             `;
             list.appendChild(div);
@@ -153,13 +155,14 @@
             let totalExp = 0;
             expInputs.forEach(input => totalExp += parseFloat(input.value) || 0);
 
-            document.getElementById('display-income').innerText = totalIn.toLocaleString();
-            document.getElementById('display-expenses').innerText = totalExp.toLocaleString();
-            document.getElementById('display-remaining').innerText = (totalIn - totalExp).toLocaleString();
+            // عرض الأرقام بتنسيق إنجليزي واضح
+            document.getElementById('display-income').innerText = totalIn.toLocaleString('en-US');
+            document.getElementById('display-expenses').innerText = totalExp.toLocaleString('en-US');
+            document.getElementById('display-remaining').innerText = (totalIn - totalExp).toLocaleString('en-US');
         }
 
         function addExpense() {
-            const name = prompt("ما هو البند الجديد؟");
+            const name = prompt("ما هو اسم البند الجديد؟");
             if (name) {
                 renderExpense(name, 0);
                 updateAll();
@@ -167,7 +170,6 @@
         }
 
         function saveToCloud() {
-            // حفظ الدخل
             const incomeData = {
                 in1: document.getElementById('inc-1').value,
                 in2: document.getElementById('inc-2').value,
@@ -175,7 +177,6 @@
             };
             localStorage.setItem('abu_nawaf_income', JSON.stringify(incomeData));
 
-            // حفظ المصاريف
             const expInputs = document.querySelectorAll('.exp-input');
             const currentExpenses = [];
             expInputs.forEach(input => {
@@ -184,7 +185,6 @@
             });
             localStorage.setItem('abu_nawaf_expenses', JSON.stringify(currentExpenses));
             
-            // إظهار رسالة النجاح
             const msg = document.getElementById('save-msg');
             msg.classList.remove('opacity-0');
             setTimeout(() => msg.classList.add('opacity-0'), 3000);
