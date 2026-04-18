@@ -10,12 +10,11 @@
     <style>
         body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); min-height: 100vh; }
         .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: all 0.3s ease; }
-        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         input { background: transparent; border: none; font-weight: bold; width: 85px; text-align: center; color: #1e293b; outline: none; }
         .pulse { animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         .save-btn { transition: all 0.3s; cursor: pointer; }
-        .save-btn:active { transform: scale(0.9); }
+        .save-btn:active { transform: scale(0.95); }
     </style>
 </head>
 <body class="p-4 md:p-8 text-slate-800">
@@ -32,18 +31,18 @@
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="glass-card p-6 text-center border-t-4 border-blue-500 relative overflow-hidden">
-                <div class="text-4xl mb-2 icon-3d">💰</div>
+            <div class="glass-card p-6 text-center border-t-4 border-blue-500">
+                <div class="text-4xl mb-2">💰</div>
                 <div class="text-slate-500 text-sm">إجمالي الدخل</div>
                 <div id="display-income" class="text-2xl font-bold text-blue-600">0</div>
             </div>
             <div class="glass-card p-6 text-center border-t-4 border-red-400">
-                <div class="text-4xl mb-2 icon-3d">💸</div>
+                <div class="text-4xl mb-2">💸</div>
                 <div class="text-slate-500 text-sm">إجمالي المصاريف</div>
                 <div id="display-expenses" class="text-2xl font-bold text-red-500">0</div>
             </div>
             <div class="glass-card p-6 text-center border-t-4 border-emerald-500 bg-emerald-50/50">
-                <div class="text-4xl mb-2 icon-3d">🌿</div>
+                <div class="text-4xl mb-2">🌿</div>
                 <div class="text-slate-500 text-sm">المتبقي الصافي</div>
                 <div id="display-remaining" class="text-2xl font-bold text-emerald-600">0</div>
             </div>
@@ -54,23 +53,23 @@
                 <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
                     <i data-lucide="trending-up" class="text-blue-500"></i> مصادر الدخل
                 </h2>
-                <div class="space-y-4">
+                <div class="space-y-4" id="income-list">
                     <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
                         <span>الراتب الأساسي</span>
                         <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="18072" oninput="updateAll()" id="inc-1"> <span class="text-xs">ريال</span>
+                            <input type="number" value="18072" oninput="updateAll()" id="inc-1"> <span class="text-xs text-slate-400">ريال</span>
                         </div>
                     </div>
                     <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
                         <span>حساب المواطن</span>
                         <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="1100" oninput="updateAll()" id="inc-2"> <span class="text-xs">ريال</span>
+                            <input type="number" value="1100" oninput="updateAll()" id="inc-2"> <span class="text-xs text-slate-400">ريال</span>
                         </div>
                     </div>
                     <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
                         <span>الدعم</span>
                         <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="1913" oninput="updateAll()" id="inc-3"> <span class="text-xs">ريال</span>
+                            <input type="number" value="1913" oninput="updateAll()" id="inc-3"> <span class="text-xs text-slate-400">ريال</span>
                         </div>
                     </div>
                 </div>
@@ -85,7 +84,7 @@
                 <div class="mt-auto space-y-3">
                     <button onclick="addExpense()" class="w-full py-2 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 hover:bg-white transition text-sm">+ إضافة بند جديد</button>
                     <button onclick="saveToCloud()" class="save-btn w-full py-3 bg-blue-600 text-white rounded-xl shadow-lg flex items-center justify-center gap-2 font-bold hover:bg-blue-700">
-                        <i data-lucide="cloud-lightning" class="w-5 h-5"></i> حفظ في سحابة أبو نواف
+                        <i data-lucide="save" class="w-5 h-5"></i> حفظ التغييرات الآن
                     </button>
                 </div>
             </section>
@@ -110,26 +109,38 @@
         ];
 
         function init() {
-            const list = document.getElementById('expenses-list');
-            const savedData = localStorage.getItem('abu_nawaf_budget');
-            const finalExpenses = savedData ? JSON.parse(savedData) : defaultExpenses;
+            // 1. استرداد الدخل المحفوظ
+            const savedIncome = localStorage.getItem('abu_nawaf_income');
+            if (savedIncome) {
+                const incData = JSON.parse(savedIncome);
+                document.getElementById('inc-1').value = incData.in1;
+                document.getElementById('inc-2').value = incData.in2;
+                document.getElementById('inc-3').value = incData.in3;
+            }
 
+            // 2. استرداد المصاريف المحفوظة
+            const savedExpenses = localStorage.getItem('abu_nawaf_expenses');
+            const finalExpenses = savedExpenses ? JSON.parse(savedExpenses) : defaultExpenses;
+
+            document.getElementById('expenses-list').innerHTML = ''; // تنظيف القائمة
             finalExpenses.forEach(item => {
                 renderExpense(item.name, item.val);
             });
+
             updateAll();
         }
 
         function renderExpense(name, val) {
             const list = document.getElementById('expenses-list');
-            list.innerHTML += `
-                <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition border-b border-slate-50">
-                    <span class="text-sm text-slate-600">${name}</span>
-                    <div class="bg-red-50 p-2 rounded-lg">
-                        <input type="number" value="${val}" oninput="updateAll()" class="exp-input text-red-600">
-                    </div>
+            const div = document.createElement('div');
+            div.className = "flex justify-between items-center p-3 hover:bg-white rounded-xl transition border-b border-slate-50";
+            div.innerHTML = `
+                <span class="text-sm text-slate-600">${name}</span>
+                <div class="bg-red-50 p-2 rounded-lg">
+                    <input type="number" value="${val}" oninput="updateAll()" class="exp-input text-red-600">
                 </div>
             `;
+            list.appendChild(div);
         }
 
         function updateAll() {
@@ -156,15 +167,24 @@
         }
 
         function saveToCloud() {
+            // حفظ الدخل
+            const incomeData = {
+                in1: document.getElementById('inc-1').value,
+                in2: document.getElementById('inc-2').value,
+                in3: document.getElementById('inc-3').value
+            };
+            localStorage.setItem('abu_nawaf_income', JSON.stringify(incomeData));
+
+            // حفظ المصاريف
             const expInputs = document.querySelectorAll('.exp-input');
             const currentExpenses = [];
             expInputs.forEach(input => {
-                const name = input.parentElement.previousElementSibling.innerText;
+                const name = input.closest('div').parentElement.querySelector('span').innerText;
                 currentExpenses.push({ name, val: parseFloat(input.value) || 0 });
             });
-
-            localStorage.setItem('abu_nawaf_budget', JSON.stringify(currentExpenses));
+            localStorage.setItem('abu_nawaf_expenses', JSON.stringify(currentExpenses));
             
+            // إظهار رسالة النجاح
             const msg = document.getElementById('save-msg');
             msg.classList.remove('opacity-0');
             setTimeout(() => msg.classList.add('opacity-0'), 3000);
