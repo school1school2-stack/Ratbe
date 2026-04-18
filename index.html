@@ -1,0 +1,67 @@
+import json
+import os
+
+class SalaryManager:
+    def __init__(self):
+        # البيانات الأساسية كما زودتني بها
+        self.data = {
+            "income": {
+                "الراتب الأساسي": 18072,
+                "حساب المواطن": 1100,
+                "الدعم": 1913
+            },
+            "expenses": {
+                "بر الوالدة": 300,
+                "قسط البيت": 6566,
+                "الكهرباء": 744,
+                "الإنترنت": 690,
+                "الماء": 100,
+                "زبود": 1600,
+                "نقل طيف ولمى": 350,
+                "قرض": 2950,
+                "تجميع الديرة": 2500
+            }
+        }
+
+    def calculate(self):
+        total_income = sum(self.data["income"].values())
+        total_expenses = sum(self.data["expenses"].values())
+        remaining = total_income - total_expenses
+        return total_income, total_expenses, remaining
+
+    def display_report(self):
+        total_in, total_ex, remain = self.calculate()
+        
+        print("\n" + "="*45)
+        print(f"{'تقرير ميزانية عام 2026':^45}")
+        print("="*45)
+        
+        print("\n[ أولاً: مصادر الدخل ]")
+        for key, val in self.data["income"].items():
+            print(f"  - {key:<15}: {val:>7} ريال")
+        print(f"  {'إجمالي الدخل':<15}: {total_in:>7} ريال")
+        
+        print("\n[ ثانياً: المصاريف والالتزامات ]")
+        for key, val in self.data["expenses"].items():
+            print(f"  - {key:<15}: {val:>7} ريال")
+        print(f"  {'إجمالي المصاريف':<15}: {total_ex:>7} ريال")
+        
+        print("\n" + "-"*45)
+        print(f"  {'المبلغ المتبقي':<15}: {remain:>7} ريال")
+        print("-"*45 + "\n")
+
+    def save_to_file(self, filename="budget_2026.txt"):
+        """حفظ التقرير في ملف نصي للرجوع إليه"""
+        total_in, total_ex, remain = self.calculate()
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(f"تقرير ميزانية 2026\n")
+            f.write(f"إجمالي الدخل: {total_in}\n")
+            f.write(f"إجمالي المصاريف: {total_ex}\n")
+            f.write(f"المتبقي: {remain}\n")
+        print(f"✅ تم حفظ التقرير في الملف: {filename}")
+
+# تشغيل البرنامج
+if __name__ == "__main__":
+    manager = SalaryManager()
+    manager.display_report()
+    manager.save_to_file()
