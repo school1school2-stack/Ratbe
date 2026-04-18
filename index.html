@@ -3,144 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ميزانية أبو نواف 2026</title>
+    <title>Dashboard | أبو نواف 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); min-height: 100vh; }
-        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: all 0.3s ease; }
-        input { background: transparent; border: none; font-weight: bold; width: 90px; text-align: center; color: #1e293b; outline: none; font-family: sans-serif; }
-        .number-font { font-family: sans-serif; }
-        .pulse { animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        .save-btn { transition: all 0.3s; cursor: pointer; }
-        .save-btn:active { transform: scale(0.95); }
+        body { font-family: 'Cairo', sans-serif; background: #f1f5f9; min-height: 100vh; color: #1e293b; }
+        .number-font { font-family: 'Inter', sans-serif; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: 0.3s; }
+        .glass-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+        input { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 8px; font-weight: bold; width: 100px; text-align: center; font-family: 'Inter', sans-serif; outline: none; }
+        input:focus { border-color: #3b82f6; ring: 2px; }
+        .save-btn { transition: 0.3s; cursor: pointer; background: #2563eb; color: white; padding: 12px; border-radius: 12px; font-weight: bold; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .save-btn:hover { background: #1d4ed8; }
     </style>
 </head>
-<body class="p-4 md:p-8 text-slate-800">
+<body class="p-4 md:p-8">
 
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-5xl mx-auto">
         <header class="text-center mb-10">
-            <div class="inline-block px-6 py-2 bg-white/50 rounded-full mb-4 text-blue-600 font-bold tracking-widest shadow-sm">
-                مرحباً بك.. أَبُـو نَـوَاف
-            </div>
-            <h1 class="text-3xl font-bold text-slate-800 flex justify-center items-center gap-3">
-                <span class="pulse text-4xl">💎</span> مدير ميزانية 2026
-            </h1>
-            <p class="text-slate-500 mt-2 italic">"بارك الله لك في رزقك وفيما أعطيت"</p>
+            <div class="text-blue-600 font-bold text-sm tracking-widest mb-2">DASHBOARD 2026</div>
+            <h1 class="text-3xl font-bold text-slate-800">أَبُـو نَـوَاف | المستشار المالي</h1>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="glass-card p-6 text-center border-t-4 border-blue-500">
-                <div class="text-4xl mb-2">💰</div>
-                <div class="text-slate-500 text-sm font-bold">إجمالي الدخل</div>
-                <div id="display-income" class="text-2xl font-bold text-blue-600 number-font">0</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="glass-card p-6 border-b-4 border-blue-500">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-slate-500 font-bold">إجمالي الإيرادات</span>
+                    <i data-lucide="wallet" class="text-blue-500 w-5 h-5"></i>
+                </div>
+                <div id="display-income" class="text-3xl font-bold text-slate-800 number-font">0.00</div>
             </div>
-            <div class="glass-card p-6 text-center border-t-4 border-red-400">
-                <div class="text-4xl mb-2">💸</div>
-                <div class="text-slate-500 text-sm font-bold">إجمالي المصاريف</div>
-                <div id="display-expenses" class="text-2xl font-bold text-red-500 number-font">0</div>
+            <div class="glass-card p-6 border-b-4 border-orange-500">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-slate-500 font-bold">إجمالي النفقات</span>
+                    <i data-lucide="credit-card" class="text-orange-500 w-5 h-5"></i>
+                </div>
+                <div id="display-expenses" class="text-3xl font-bold text-slate-800 number-font">0.00</div>
             </div>
-            <div class="glass-card p-6 text-center border-t-4 border-emerald-500 bg-emerald-50/50">
-                <div class="text-4xl mb-2">🌿</div>
-                <div class="text-slate-500 text-sm font-bold">المتبقي الصافي</div>
-                <div id="display-remaining" class="text-2xl font-bold text-emerald-600 number-font">0</div>
+            <div class="glass-card p-6 border-b-4 border-emerald-500">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-slate-500 font-bold">الفائض المالي</span>
+                    <i data-lucide="trending-up" class="text-emerald-500 w-5 h-5"></i>
+                </div>
+                <div id="display-remaining" class="text-3xl font-bold text-emerald-600 number-font">0.00</div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <section class="glass-card p-6">
-                <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
-                    <i data-lucide="trending-up" class="text-blue-500"></i> مصادر الدخل
+                <h2 class="text-lg font-bold mb-6 flex items-center gap-2 border-b pb-2">
+                    <i data-lucide="pie-chart" class="text-blue-500"></i> تحليل مصادر الدخل
                 </h2>
-                <div class="space-y-4" id="income-list">
-                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
-                        <span>الراتب الأساسي</span>
-                        <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="18072" oninput="updateAll()" id="inc-1"> <span class="text-xs text-slate-400">SAR</span>
-                        </div>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-600 font-bold">الراتب الشهري</span>
+                        <input type="number" id="inc-1" value="18072" oninput="updateAll()">
                     </div>
-                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
-                        <span>حساب المواطن</span>
-                        <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="1100" oninput="updateAll()" id="inc-2"> <span class="text-xs text-slate-400">SAR</span>
-                        </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-600 font-bold">دعم حساب المواطن</span>
+                        <input type="number" id="inc-2" value="1100" oninput="updateAll()">
                     </div>
-                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
-                        <span>الدعم</span>
-                        <div class="bg-slate-100 p-2 rounded-lg">
-                            <input type="number" value="1913" oninput="updateAll()" id="inc-3"> <span class="text-xs text-slate-400">SAR</span>
-                        </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-600 font-bold">الدعم الإضافي</span>
+                        <input type="number" id="inc-3" value="1913" oninput="updateAll()">
                     </div>
                 </div>
             </section>
 
             <section class="glass-card p-6 flex flex-col">
-                <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
-                    <i data-lucide="shopping-cart" class="text-red-400"></i> المصاريف والمدخرات
+                <h2 class="text-lg font-bold mb-6 flex items-center gap-2 border-b pb-2">
+                    <i data-lucide="activity" class="text-orange-500"></i> خطة النفقات والادخار
                 </h2>
-                <div class="space-y-3 overflow-y-auto max-h-[300px] pr-2 mb-4" id="expenses-list"></div>
+                <div class="space-y-4 overflow-y-auto max-h-[300px] mb-6 pr-2" id="expenses-list">
+                    </div>
                 
-                <div class="mt-auto space-y-3">
-                    <button onclick="addExpense()" class="w-full py-2 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 hover:bg-white transition text-sm">+ إضافة بند جديد</button>
-                    <button onclick="saveToCloud()" class="save-btn w-full py-3 bg-blue-600 text-white rounded-xl shadow-lg flex items-center justify-center gap-2 font-bold hover:bg-blue-700">
-                        <i data-lucide="save" class="w-5 h-5"></i> حفظ التغييرات الآن
+                <div class="mt-auto space-y-4">
+                    <button onclick="addExpense()" class="w-full py-2 bg-slate-100 rounded-lg text-slate-600 font-bold hover:bg-slate-200 transition text-sm">+ إضافة بند نفقات جديد</button>
+                    <button onclick="saveToCloud()" class="save-btn shadow-blue-200 shadow-lg">
+                        <i data-lucide="shield-check"></i> تأمين وحفظ البيانات
                     </button>
                 </div>
             </section>
         </div>
-        
-        <p id="save-msg" class="text-center mt-6 text-emerald-600 font-bold opacity-0 transition-opacity">✅ تم الحفظ بنجاح يا أبو نواف!</p>
+
+        <p id="save-msg" class="text-center mt-6 text-emerald-600 font-bold opacity-0 transition-opacity">✅ تم تحديث بيانات أبو نواف بنجاح</p>
     </div>
 
     <script>
         lucide.createIcons();
 
-        // البيانات الافتراضية بالإنجليزية
         const defaultExpenses = [
             { name: "بر الوالدة ❤️", val: 300 },
-            { name: "قسط البيت 🏠", val: 6566 },
-            { name: "الكهرباء ⚡", val: 744 },
-            { name: "الإنترنت 🌐", val: 690 },
-            { name: "الماء 💧", val: 100 },
-            { name: "زبود 🛒", val: 1600 },
-            { name: "نقل طيف ولمى 🚌", val: 350 },
-            { name: "قرض بنكي 💳", val: 2950 },
-            { name: "تجميع الديرة 🏦", val: 2500 }
+            { name: "أقساط سكنية 🏠", val: 6566 },
+            { name: "فواتير الكهرباء ⚡", val: 744 },
+            { name: "خدمات الإنترنت 🌐", val: 690 },
+            { name: "فواتير المياه 💧", val: 100 },
+            { name: "مصاريف عامة (زبود) 🛒", val: 1600 },
+            { name: "خدمات نقل 🚌", val: 350 },
+            { name: "التزامات بنكية 💳", val: 2950 },
+            { name: "مدخرات الديرة 🏦", val: 2500 }
         ];
 
         function init() {
-            // استرداد الدخل
-            const savedIncome = localStorage.getItem('abu_nawaf_income');
+            // استرجاع الدخل
+            const savedIncome = localStorage.getItem('an_income');
             if (savedIncome) {
-                const incData = JSON.parse(savedIncome);
-                document.getElementById('inc-1').value = incData.in1;
-                document.getElementById('inc-2').value = incData.in2;
-                document.getElementById('inc-3').value = incData.in3;
+                const data = JSON.parse(savedIncome);
+                document.getElementById('inc-1').value = data.v1;
+                document.getElementById('inc-2').value = data.v2;
+                document.getElementById('inc-3').value = data.v3;
             }
 
-            // استرداد المصاريف
-            const savedExpenses = localStorage.getItem('abu_nawaf_expenses');
-            const finalExpenses = savedExpenses ? JSON.parse(savedExpenses) : defaultExpenses;
-
+            // استرجاع النفقات
+            const savedExp = localStorage.getItem('an_expenses');
+            const list = savedExp ? JSON.parse(savedExp) : defaultExpenses;
+            
             document.getElementById('expenses-list').innerHTML = '';
-            finalExpenses.forEach(item => {
-                renderExpense(item.name, item.val);
-            });
-
+            list.forEach(item => renderItem(item.name, item.val));
+            
             updateAll();
         }
 
-        function renderExpense(name, val) {
+        function renderItem(name, val) {
             const list = document.getElementById('expenses-list');
             const div = document.createElement('div');
-            div.className = "flex justify-between items-center p-3 hover:bg-white rounded-xl transition border-b border-slate-50";
+            div.className = "flex justify-between items-center";
             div.innerHTML = `
-                <span class="text-sm text-slate-600 font-bold">${name}</span>
-                <div class="bg-red-50 p-2 rounded-lg">
-                    <input type="number" value="${val}" oninput="updateAll()" class="exp-input text-red-600 number-font">
-                </div>
+                <span class="text-slate-600 text-sm font-bold">${name}</span>
+                <input type="number" value="${val}" oninput="updateAll()" class="exp-input">
             `;
             list.appendChild(div);
         }
@@ -155,39 +146,40 @@
             let totalExp = 0;
             expInputs.forEach(input => totalExp += parseFloat(input.value) || 0);
 
-            // عرض الأرقام بتنسيق إنجليزي واضح
-            document.getElementById('display-income').innerText = totalIn.toLocaleString('en-US');
-            document.getElementById('display-expenses').innerText = totalExp.toLocaleString('en-US');
-            document.getElementById('display-remaining').innerText = (totalIn - totalExp).toLocaleString('en-US');
+            // عرض الأرقام بتنسيق إنجليزي محترف
+            document.getElementById('display-income').innerText = totalIn.toLocaleString('en-US', {minimumFractionDigits: 2});
+            document.getElementById('display-expenses').innerText = totalExp.toLocaleString('en-US', {minimumFractionDigits: 2});
+            document.getElementById('display-remaining').innerText = (totalIn - totalExp).toLocaleString('en-US', {minimumFractionDigits: 2});
         }
 
         function addExpense() {
-            const name = prompt("ما هو اسم البند الجديد؟");
+            const name = prompt("ما هو مسمى البند الجديد؟");
             if (name) {
-                renderExpense(name, 0);
+                renderItem(name, 0);
                 updateAll();
             }
         }
 
         function saveToCloud() {
-            const incomeData = {
-                in1: document.getElementById('inc-1').value,
-                in2: document.getElementById('inc-2').value,
-                in3: document.getElementById('inc-3').value
+            const income = {
+                v1: document.getElementById('inc-1').value,
+                v2: document.getElementById('inc-2').value,
+                v3: document.getElementById('inc-3').value
             };
-            localStorage.setItem('abu_nawaf_income', JSON.stringify(incomeData));
+            localStorage.setItem('an_income', JSON.stringify(income));
 
-            const expInputs = document.querySelectorAll('.exp-input');
-            const currentExpenses = [];
-            expInputs.forEach(input => {
-                const name = input.closest('div').parentElement.querySelector('span').innerText;
-                currentExpenses.push({ name, val: parseFloat(input.value) || 0 });
+            const expenses = [];
+            document.querySelectorAll('.exp-input').forEach(input => {
+                expenses.push({
+                    name: input.previousElementSibling.innerText,
+                    val: input.value
+                });
             });
-            localStorage.setItem('abu_nawaf_expenses', JSON.stringify(currentExpenses));
-            
+            localStorage.setItem('an_expenses', JSON.stringify(expenses));
+
             const msg = document.getElementById('save-msg');
-            msg.classList.remove('opacity-0');
-            setTimeout(() => msg.classList.add('opacity-0'), 3000);
+            msg.style.opacity = '1';
+            setTimeout(() => msg.style.opacity = '0', 3000);
         }
 
         window.onload = init;
