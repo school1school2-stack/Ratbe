@@ -2,43 +2,156 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>مدير ميزانية 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مستشاري المالي 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #2c3e50; }
-        .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
-        .total-box { background: #e8f5e9; padding: 15px; border-radius: 10px; margin-top: 20px; font-weight: bold; }
-        .remaining { font-size: 1.2em; color: #2e7d32; text-align: center; }
-        .expense-val { color: #c62828; }
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); min-height: 100vh; }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        input { background: transparent; border: none; font-weight: bold; width: 80px; text-align: center; color: #1e293b; outline: none; }
+        .input-group:focus-within { border-color: #3b82f6; ring: 2px; }
+        .icon-3d { filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1)); font-size: 2rem; }
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8">
 
-<div class="container">
-    <h2>💰 ميزانية عام 2026</h2>
-    <hr>
-    <div class="row"><span>إجمالي الدخل (راتب + دعم):</span> <b>20,996 ريال</b></div>
-    
-    <h3>المصاريف:</h3>
-    <div id="expenses">
-        <div class="row"><span>بر الوالدة:</span> <span class="expense-val">300 ريال</span></div>
-        <div class="row"><span>قسط البيت:</span> <span class="expense-val">6,566 ريال</span></div>
-        <div class="row"><span>الكهرباء:</span> <span class="expense-val">744 ريال</span></div>
-        <div class="row"><span>الإنترنت:</span> <span class="expense-val">690 ريال</span></div>
-        <div class="row"><span>الماء:</span> <span class="expense-val">100 ريال</span></div>
-        <div class="row"><span>زبود:</span> <span class="expense-val">1,600 ريال</span></div>
-        <div class="row"><span>نقل (طيف ولمى):</span> <span class="expense-val">350 ريال</span></div>
-        <div class="row"><span>قرض:</span> <span class="expense-val">2,950 ريال</span></div>
-        <div class="row"><span>تجميع الديرة:</span> <span class="expense-val">2,500 ريال</span></div>
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-slate-800 flex justify-center items-center gap-3">
+                <span class="pulse">💎</span> مدير ميزانية 2026
+            </h1>
+            <p class="text-slate-500 mt-2">نظّم مالك.. يبارك الله لك</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="glass-card p-6 text-center border-t-4 border-blue-500">
+                <div class="text-4xl mb-2">💰</div>
+                <div class="text-slate-500 text-sm">إجمالي الدخل</div>
+                <div id="display-income" class="text-2xl font-bold text-blue-600">20,996</div>
+            </div>
+            <div class="glass-card p-6 text-center border-t-4 border-red-400">
+                <div class="text-4xl mb-2">💸</div>
+                <div class="text-slate-500 text-sm">إجمالي المصاريف</div>
+                <div id="display-expenses" class="text-2xl font-bold text-red-500">15,800</div>
+            </div>
+            <div class="glass-card p-6 text-center border-t-4 border-emerald-500 bg-emerald-50">
+                <div class="text-4xl mb-2">🌿</div>
+                <div class="text-slate-500 text-sm">المتبقي الصافي</div>
+                <div id="display-remaining" class="text-2xl font-bold text-emerald-600">5,196</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <section class="glass-card p-6">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <i data-lucide="trending-up" class="text-blue-500"></i> مصادر الدخل
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
+                        <span>الراتب الأساسي</span>
+                        <div class="bg-slate-100 p-2 rounded-lg">
+                            <input type="number" value="18072" oninput="updateAll()" id="inc-1"> <span class="text-xs">ريال</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
+                        <span>حساب المواطن</span>
+                        <div class="bg-slate-100 p-2 rounded-lg">
+                            <input type="number" value="1100" oninput="updateAll()" id="inc-2"> <span class="text-xs">ريال</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition">
+                        <span>الدعم</span>
+                        <div class="bg-slate-100 p-2 rounded-lg">
+                            <input type="number" value="1913" oninput="updateAll()" id="inc-3"> <span class="text-xs">ريال</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass-card p-6">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <i data-lucide="shopping-cart" class="text-red-400"></i> المصاريف والمدخرات
+                </h2>
+                <div class="space-y-3 h-[300px] overflow-y-auto pr-2" id="expenses-list">
+                    </div>
+                <button onclick="addExpense()" class="mt-4 w-full py-2 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 hover:bg-slate-50 transition">+ إضافة خانة جديدة</button>
+            </section>
+        </div>
     </div>
 
-    <div class="total-box">
-        <div class="row"><span>إجمالي المصاريف:</span> <span>15,800 ريال</span></div>
-        <div class="row remaining"><span>المتبقي الصافي:</span> <span>5,196 ريال</span></div>
-    </div>
-    <p style="text-align:center; font-size: 0.8em; color: #7f8c8d;">قابلة للتعديل من خلال ملف البرمجة</p>
-</div>
+    <script>
+        // الأيقونات
+        lucide.createIcons();
 
+        const defaultExpenses = [
+            { name: "أمي الغالية ❤️", val: 300 },
+            { name: "قسط البيت 🏠", val: 6566 },
+            { name: "الكهرباء ⚡", val: 744 },
+            { name: "الإنترنت 🌐", val: 690 },
+            { name: "الماء 💧", val: 100 },
+            { name: "زبود 🛒", val: 1600 },
+            { name: "نقل طيف ولمى 🚌", val: 350 },
+            { name: "قرض بنكي 💳", val: 2950 },
+            { name: "تجميع الديرة 🏦", val: 2500 }
+        ];
+
+        function init() {
+            const list = document.getElementById('expenses-list');
+            defaultExpenses.forEach((item, index) => {
+                list.innerHTML += `
+                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition border-b border-slate-50">
+                        <span class="text-sm text-slate-600">${item.name}</span>
+                        <div class="bg-red-50 p-2 rounded-lg">
+                            <input type="number" value="${item.val}" oninput="updateAll()" class="exp-input text-red-600">
+                        </div>
+                    </div>
+                `;
+            });
+            updateAll();
+        }
+
+        function updateAll() {
+            // حساب الدخل
+            const in1 = parseFloat(document.getElementById('inc-1').value) || 0;
+            const in2 = parseFloat(document.getElementById('inc-2').value) || 0;
+            const in3 = parseFloat(document.getElementById('inc-3').value) || 0;
+            const totalIn = in1 + in2 + in3;
+
+            // حساب المصاريف
+            const expInputs = document.querySelectorAll('.exp-input');
+            let totalExp = 0;
+            expInputs.forEach(input => {
+                totalExp += parseFloat(input.value) || 0;
+            });
+
+            // تحديث الشاشة
+            document.getElementById('display-income').innerText = totalIn.toLocaleString();
+            document.getElementById('display-expenses').innerText = totalExp.toLocaleString();
+            document.getElementById('display-remaining').innerText = (totalIn - totalExp).toLocaleString();
+        }
+
+        function addExpense() {
+            const name = prompt("اسم المصروف الجديد:");
+            if (name) {
+                const list = document.getElementById('expenses-list');
+                list.innerHTML += `
+                    <div class="flex justify-between items-center p-3 hover:bg-white rounded-xl transition border-b border-slate-50">
+                        <span class="text-sm text-slate-600">${name}</span>
+                        <div class="bg-red-50 p-2 rounded-lg">
+                            <input type="number" value="0" oninput="updateAll()" class="exp-input text-red-600">
+                        </div>
+                    </div>
+                `;
+                updateAll();
+            }
+        }
+
+        window.onload = init;
+    </script>
 </body>
 </html>
